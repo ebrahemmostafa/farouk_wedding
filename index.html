@@ -3,94 +3,89 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zeyad & Lara - Wedding Invitation</title>
+    <title>Zeyad &amp; Lara - Wedding Invitation</title>
     <meta
       name="description"
-      content="Zeyad Ashraf & Lara Sherif are getting married on May 7th, 2026 at the Four Seasons Hotel, Cairo. Open the invitation."
-    />
+      content="Zeyad Ashraf &amp; Lara Sherif are getting married on May 7th, 2026 at the Four Seasons Hotel, Cairo. Open the invitation."
+    />
     <script type="module" crossorigin src="assets/index-CTt3RVmm.js"></script>
     <link rel="stylesheet" crossorigin href="assets/index-DCXbbo_L.css">
     <style>
-      /* ── Hero Video ── */
-      .hero-video-wrap {
-        width: min(520px, 90vw);
-        margin: 0 auto 2rem;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 8px 32px rgba(36, 56, 87, 0.18);
-      }
-      .hero-video-wrap video {
-        width: 100%;
-        display: block;
-        border-radius: 8px;
-      }
-
-      /* ── Envelope Preloader Enhancements ── */
-      .preloader {
+      /* ── Video Preloader ── */
+      #videoPreloader {
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        background: var(--paper);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
         cursor: pointer;
+        transition: opacity 0.8s ease;
       }
-      .envelope-cta {
-        margin-top: 1.6rem;
+      #videoPreloader.fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #videoPreloader video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: var(--paper);
+      }
+      .video-tap-hint {
+        position: absolute;
+        bottom: 12%;
+        left: 50%;
+        transform: translateX(-50%);
         text-transform: uppercase;
         letter-spacing: 0.22em;
         font-size: 0.72rem;
         color: var(--ink-soft);
-        animation: envelopePulse 2s ease-in-out infinite;
+        animation: hintPulse 2s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 1;
       }
-      @keyframes envelopePulse {
-        0%, 100% { opacity: 0.5; transform: translateY(0); }
-        50% { opacity: 1; transform: translateY(-4px); }
+      @keyframes hintPulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
       }
-      .envelope-icon {
-        display: inline-block;
-        width: 54px;
-        height: 38px;
-        border: 2px solid var(--ink);
-        border-radius: 3px;
-        position: relative;
-        margin-top: 1.2rem;
+      .video-tap-hint.hidden {
+        display: none;
+      }
+      .skip-btn {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.2rem;
+        background: rgba(36, 56, 87, 0.25);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(36, 56, 87, 0.3);
+        color: var(--ink);
+        padding: 0.5rem 1.2rem;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 0.65rem;
         cursor: pointer;
-        transition: transform 0.3s ease;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 0.4s ease;
       }
-      .envelope-icon:hover {
-        transform: scale(1.1);
-      }
-      .envelope-icon::before {
-        content: '';
-        position: absolute;
-        top: -1px;
-        left: -2px;
-        right: -2px;
-        height: 0;
-        border-left: 29px solid transparent;
-        border-right: 29px solid transparent;
-        border-top: 20px solid var(--ink);
-      }
-      .envelope-icon::after {
-        content: '';
-        position: absolute;
-        top: -1px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-left: 27px solid transparent;
-        border-right: 27px solid transparent;
-        border-top: 18px solid var(--paper);
+      .skip-btn.visible {
+        opacity: 1;
       }
     </style>
   </head>
   <body>
 
-
-    <div id="preloader" class="preloader">
-      <div class="preloader-content">
-        <img src="assets/bird-D7IaidC_.png" alt="" class="bird" />
-        <div class="couple-mark">Z &amp; L</div>
-        <div class="line"></div>
-        <p class="preloader-subtitle">You have received an invitation from</p>
-        <p class="preloader-title">Zeyad &amp; Lara</p>
-        <div class="envelope-icon" id="envelopeIcon"></div>
-        <p class="envelope-cta">Tap to open</p>
-      </div>
+    <!-- Video Preloader: the intro video IS the first screen -->
+    <div id="videoPreloader">
+      <video id="introVideo" playsinline preload="auto">
+        <source src="assets/intro_farouk.mp4" type="video/mp4" />
+      </video>
+      <p class="video-tap-hint" id="tapHint">Tap to play</p>
+      <button class="skip-btn" id="skipBtn">Skip</button>
     </div>
 
     <main class="page">
@@ -98,16 +93,6 @@
       <img src="assets/mountain--FPcrQeT.png" alt="" class="corner corner-right" />
 
       <section class="hero">
-        <div class="hero-video-wrap">
-          <div class="vintage-frame">
-            <span class="corner-tr"></span>
-            <span class="corner-bl"></span>
-            <video id="introVideo" playsinline preload="auto">
-              <source src="assets/intro_farouk.mp4" type="video/mp4" />
-            </video>
-          </div>
-        </div>
-
         <h2 class="section-kicker">We are getting married</h2>
         <img src="assets/gazebo-BX556LN1.png" alt="" class="gazebo" />
         <h1 class="name">Zeyad Ashraf</h1>
@@ -222,67 +207,65 @@
         </div>
       </footer>
     </main>
-
+
   <script src="../invitation-language-switch.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      var preloader = document.getElementById('preloader');
+      var videoPreloader = document.getElementById('videoPreloader');
       var video = document.getElementById('introVideo');
-      var envelopeClicked = false;
+      var tapHint = document.getElementById('tapHint');
+      var skipBtn = document.getElementById('skipBtn');
+      var oldPreloader = document.getElementById('preloader');
+      var started = false;
 
-      if (!preloader || !video) return;
-
-      // Force-show preloader
-      function forceShowPreloader() {
-        if (envelopeClicked) return;
-        preloader.classList.remove('hidden');
-        preloader.style.cssText = 'position:fixed;inset:0;z-index:1000;background:var(--paper);display:grid;place-items:center;opacity:1;pointer-events:auto;cursor:pointer;transition:none;';
+      // Hide the old bundled preloader if it exists
+      if (oldPreloader) {
+        oldPreloader.style.display = 'none';
+        try { oldPreloader.remove(); } catch(e) {}
       }
-      forceShowPreloader();
 
-      // Safety net: block bundled JS from hiding preloader
-      var observer = new MutationObserver(function (mutations) {
-        if (envelopeClicked) { observer.disconnect(); return; }
-        mutations.forEach(function (m) {
-          if (m.type === 'attributes' && m.attributeName === 'class') {
-            if (preloader.classList.contains('hidden')) {
-              preloader.classList.remove('hidden');
-              forceShowPreloader();
-            }
-          }
+      if (!videoPreloader || !video) return;
+
+      // Try autoplay first
+      var autoplayPromise = video.play();
+      if (autoplayPromise !== undefined) {
+        autoplayPromise.then(function () {
+          // Autoplay worked
+          started = true;
+          tapHint.classList.add('hidden');
+          skipBtn.classList.add('visible');
+        }).catch(function () {
+          // Autoplay blocked — wait for user tap
+          video.pause();
         });
-      });
-      observer.observe(preloader, { attributes: true, attributeFilter: ['class', 'style'] });
-
-      // Block preloader removal until envelope is clicked
-      var origRemove = preloader.remove.bind(preloader);
-      preloader.remove = function () {
-        if (!envelopeClicked) return;
-        origRemove();
-      };
-
-      function openEnvelope() {
-        if (envelopeClicked) return;
-        envelopeClicked = true;
-        observer.disconnect();
-        preloader.remove = origRemove;
-
-        // Fade out preloader
-        preloader.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
-        preloader.style.transform = 'scale(1.5)';
-        preloader.style.opacity = '0';
-
-        // After fade, remove preloader and play video in hero
-        setTimeout(function () {
-          preloader.style.display = 'none';
-          video.play().catch(function () {
-            // Autoplay blocked — video stays paused with controls
-            video.setAttribute('controls', '');
-          });
-        }, 750);
       }
 
-      preloader.addEventListener('click', openEnvelope);
+      // Tap to play (if autoplay was blocked)
+      videoPreloader.addEventListener('click', function (e) {
+        if (e.target === skipBtn) return;
+        if (!started) {
+          started = true;
+          tapHint.classList.add('hidden');
+          skipBtn.classList.add('visible');
+          video.play();
+        }
+      });
+
+      // When video ends, reveal the wedding site
+      video.addEventListener('ended', revealSite);
+
+      // Skip button
+      skipBtn.addEventListener('click', function () {
+        video.pause();
+        revealSite();
+      });
+
+      function revealSite() {
+        videoPreloader.classList.add('fade-out');
+        setTimeout(function () {
+          videoPreloader.remove();
+        }, 900);
+      }
     });
   </script>
 </body>
