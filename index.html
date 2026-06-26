@@ -151,6 +151,72 @@
       .skip-btn.visible {
         opacity: 1;
       }
+      .rsvp-section {
+        padding: 4rem 1rem;
+        text-align: center;
+        background-color: var(--paper);
+        position: relative;
+      }
+      .rsvp-title {
+        font-family: 'Parisienne', cursive;
+        font-size: 3.2rem;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+      }
+      .rsvp-divider {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 3rem;
+      }
+      .rsvp-divider span {
+        width: 6px;
+        height: 6px;
+        background-color: var(--accent);
+        border-radius: 50%;
+        opacity: 0.6;
+      }
+      .rsvp-card-wrapper {
+        border: 2px dashed var(--accent);
+        border-radius: 12px;
+        padding: 2.5rem 1.5rem;
+        max-width: 450px;
+        margin: 0 auto;
+        background-color: var(--paper);
+      }
+      .rsvp-text {
+        font-family: 'Parisienne', cursive;
+        font-size: 1.8rem;
+        color: var(--ink);
+        margin-bottom: 2rem;
+      }
+      .rsvp-btn-wrapper {
+        border: 2px solid var(--accent);
+        padding: 4px;
+        border-radius: 40px;
+        display: inline-block;
+        margin-bottom: 1.5rem;
+      }
+      .rsvp-btn {
+        display: inline-block;
+        background-color: var(--accent);
+        color: var(--paper);
+        font-family: 'Parisienne', cursive;
+        font-size: 1.5rem;
+        padding: 1rem 2.5rem;
+        border-radius: 36px;
+        text-decoration: none;
+        transition: transform 0.2s, background-color 0.2s;
+      }
+      .rsvp-btn:hover {
+        transform: scale(1.02);
+        background-color: var(--ink-soft);
+      }
+      .rsvp-subtext {
+        font-family: 'Parisienne', cursive;
+        font-size: 1.2rem;
+        color: var(--ink-soft);
+      }
     </style>
   </head>
   <body>
@@ -250,6 +316,22 @@
       </section>
 
 
+
+      <section class="rsvp-section">
+        <h2 class="rsvp-title">RSVP</h2>
+        <div class="rsvp-divider">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="rsvp-card-wrapper">
+          <p class="rsvp-text">Please let us know if you'll be there!</p>
+          <div class="rsvp-btn-wrapper">
+            <a href="#" class="rsvp-btn">
+              ❤️ Count me in! ❤️
+            </a>
+          </div>
+          <p class="rsvp-subtext">tap the button - it's that easy ✨</p>
+        </div>
+      </section>
 
       <section class="faq">
         <h2 class="section-kicker">Good to Know</h2>
