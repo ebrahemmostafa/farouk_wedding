@@ -70,6 +70,25 @@
     .back-btn:hover {
       background-color: var(--ink-soft);
     }
+    .reset-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      text-decoration: none;
+      color: #b73a3a;
+      background-color: transparent;
+      padding: 0.5rem 1rem;
+      border: 1px solid #b73a3a;
+      border-radius: 20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    
+    .reset-btn:hover {
+      background-color: #b73a3a;
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -81,10 +100,12 @@
     <span class="loading">Loading...</span>
   </div>
   <br>
+  <button class="reset-btn" onclick="resetCounts()">Reset to Zero</button>
+  <br>
   <a href="index.html" class="back-btn">&larr; Back to Invitation</a>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function loadCount() {
       fetch('https://api.counterapi.dev/v1/farouk_wedding_2026/rsvp_count/')
         .then(function(response) { return response.json(); })
         .then(function(data) {
@@ -93,7 +114,29 @@
         .catch(function(err) {
           document.getElementById('countDisplay').innerHTML = '<span style="font-size:1.5rem; color:red;">Failed to load.</span>';
         });
-    });
+    }
+
+    function resetCounts() {
+      if (!confirm("Are you sure you want to reset the RSVP count to zero?")) return;
+      document.getElementById('countDisplay').innerHTML = '<span class="loading">Resetting...</span>';
+      
+      // Set to 1
+      fetch('https://api.counterapi.dev/v1/farouk_wedding_2026/rsvp_count/set?count=1')
+        .then(function() {
+          // Then decrement to 0
+          return fetch('https://api.counterapi.dev/v1/farouk_wedding_2026/rsvp_count/down');
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+          document.getElementById('countDisplay').innerHTML = data.count || 0;
+        })
+        .catch(function(err) {
+          document.getElementById('countDisplay').innerHTML = '<span style="font-size:1.5rem; color:red;">Reset failed.</span>';
+          setTimeout(loadCount, 2000);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadCount);
   </script>
 </body>
 </html>
