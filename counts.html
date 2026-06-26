@@ -85,7 +85,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      fetch('https://api.counterapi.dev/v1/farouk_wedding_2026/rsvp_count')
+      fetch('https://api.counterapi.dev/v1/farouk_wedding_2026/rsvp_count/')
         .then(function(response) { return response.json(); })
         .then(function(data) {
           document.getElementById('countDisplay').innerHTML = data.count || 0;
