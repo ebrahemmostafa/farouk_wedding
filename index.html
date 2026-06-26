@@ -11,6 +11,82 @@
     <script type="module" crossorigin src="assets/index-CTt3RVmm.js"></script>
     <link rel="stylesheet" crossorigin href="assets/index-DCXbbo_L.css">
     <style>
+      /* ── New Location Styles ── */
+      #location-section {
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .where-title {
+        font-family: 'Parisienne', cursive;
+        font-size: 3.5rem;
+        color: #b74c5e;
+        margin: 0;
+        line-height: 1.2;
+      }
+      .where-dots {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-bottom: 30px;
+      }
+      .where-dots span {
+        width: 8px;
+        height: 8px;
+        background-color: #d8a1a8;
+        border-radius: 50%;
+      }
+      .location-card {
+        border: 2px dashed #b74c5e;
+        border-radius: 20px;
+        max-width: 400px;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .venue-img-new {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        display: block;
+      }
+      .location-card-body {
+        padding: 20px 10px;
+        text-align: center;
+        background-color: transparent;
+      }
+      .venue-title {
+        font-family: 'Parisienne', cursive;
+        font-size: 2.2rem;
+        color: #b74c5e;
+        margin: 0 0 5px 0;
+      }
+      .venue-subtitle {
+        color: #8c7b7f;
+        font-size: 1rem;
+        margin: 0 0 25px 0;
+        line-height: 1.4;
+      }
+      .location-btn {
+        display: inline-block;
+        background-color: #b74c5e;
+        color: white !important;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        font-family: 'Parisienne', cursive;
+        transition: transform 0.2s, background-color 0.2s;
+        border: none;
+      }
+      .location-btn:hover {
+        transform: scale(1.05);
+        background-color: #a03c4a;
+      }
+
       /* ── Video Preloader ── */
       #videoPreloader {
         position: fixed;
@@ -127,21 +203,24 @@
         </div>
       </section>
 
-      <section class="location">
-        <h2 class="section-kicker">Location</h2>
-        <div class="vintage-frame venue-frame">
-          <span class="corner-tr"></span>
-          <span class="corner-bl"></span>
-          <img src="assets/venue-BUneM82m.jpg" alt="Four Seasons Hotel Cairo" class="venue" />
+      <section class="location" id="location-section">
+        <h2 class="where-title">Where?</h2>
+        <div class="where-dots">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
-        <p class="venue-name">Sheikh Zayed- Al Hezam el akhdar- Villa Kayan</p>
-        <a
-          class="primary-btn"
-          href="https://maps.app.goo.gl/363aGjeBmDS9mBVdA?g_st=ic"
-          target="_blank"
-          rel="noreferrer"
-          >Google Maps</a
-        >
+        <div class="location-card">
+          <img src="assets/venue-BUneM82m.jpg" alt="Villa Kayan" class="venue-img-new" />
+          <div class="location-card-body">
+            <h3 class="venue-title">Villa Kayan</h3>
+            <p class="venue-subtitle">Open Air Wedding Venue &middot; Cairo, Egypt<br>Sheikh Zayed- Al Hezam el akhdar</p>
+            <a
+              class="location-btn"
+              href="https://maps.app.goo.gl/363aGjeBmDS9mBVdA?g_st=ic"
+              target="_blank"
+              rel="noreferrer"
+            >Open Location ❤️</a>
+          </div>
+        </div>
       </section>
 
       <section class="journey">
