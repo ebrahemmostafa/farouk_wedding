@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSVP Counts - Farouk & Nour</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Parisienne&display=swap");
+    
+    :root {
+      --paper: #f6f0e4;
+      --ink: #243857;
+      --ink-soft: #51617d;
+    }
+    
+    body {
+      background-color: var(--paper);
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', serif;
+      text-align: center;
+      padding: 5rem 1rem;
+      margin: 0;
+    }
+    
+    h1 {
+      font-family: 'Parisienne', cursive;
+      font-size: 4rem;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    
+    p {
+      color: var(--ink-soft);
+      font-size: 1.5rem;
+      margin-top: 0;
+    }
+    
+    .count-display {
+      font-size: 6rem;
+      font-weight: bold;
+      margin-top: 2rem;
+      padding: 2rem;
+      border: 3px dashed var(--ink-soft);
+      display: inline-block;
+      border-radius: 20px;
+      min-width: 150px;
+      background-color: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .loading {
+      font-size: 2rem;
+      color: var(--ink-soft);
+      font-style: italic;
+    }
+    
+    .back-btn {
+      display: inline-block;
+      margin-top: 4rem;
+      text-decoration: none;
+      color: var(--paper);
+      background-color: var(--ink);
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      font-family: 'Parisienne', cursive;
+      font-size: 1.5rem;
+      transition: background-color 0.2s;
+    }
+    
+    .back-btn:hover {
+      background-color: var(--ink-soft);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Total RSVPs</h1>
+  <p>Farouk & Nour's Wedding</p>
+  
+  <div class="count-display" id="countDisplay">
+    <span class="loading">Loading...</span>
+  </div>
+  <br>
+  <a href="index.html" class="back-btn">&larr; Back to Invitation</a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('https://api.counterapi.dev/v1/farouk_wedding_2026/rsvp_count')
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+          document.getElementById('countDisplay').innerHTML = data.count || 0;
+        })
+        .catch(function(err) {
+          document.getElementById('countDisplay').innerHTML = '<span style="font-size:1.5rem; color:red;">Failed to load.</span>';
+        });
+    });
+  </script>
+</body>
+</html>

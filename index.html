@@ -325,9 +325,9 @@
         <div class="rsvp-card-wrapper">
           <p class="rsvp-text">Please let us know if you'll be there!</p>
           <div class="rsvp-btn-wrapper">
-            <a href="#" class="rsvp-btn">
+            <button id="rsvpBtn" class="rsvp-btn" style="border: none; cursor: pointer;">
               ❤️ Count me in! ❤️
-            </a>
+            </button>
           </div>
           <p class="rsvp-subtext">tap the button - it's that easy ✨</p>
         </div>
@@ -411,6 +411,26 @@
         setTimeout(function () {
           videoPreloader.remove();
         }, 900);
+      }
+      // RSVP Button Script
+      var rsvpBtn = document.getElementById('rsvpBtn');
+      if (rsvpBtn) {
+        rsvpBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var btn = this;
+          if(btn.disabled) return;
+          btn.innerHTML = 'Counting...';
+          btn.disabled = true;
+          fetch('https://api.counterapi.dev/v1/farouk_wedding_2026/rsvp_count/up')
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+              btn.innerHTML = '❤️ Thank you! ❤️';
+            })
+            .catch(function(err) {
+              btn.innerHTML = '❤️ Count me in! ❤️';
+              btn.disabled = false;
+            });
+        });
       }
     });
   </script>
