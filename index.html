@@ -11,30 +11,18 @@
     <script type="module" crossorigin src="assets/index-CTt3RVmm.js"></script>
     <link rel="stylesheet" crossorigin href="assets/index-DCXbbo_L.css">
     <style>
-      /* ── Video Intro Overlay ── */
-      .video-intro-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 2000;
-        background: #000;
-        display: grid;
-        place-items: center;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.6s ease;
+      /* ── Hero Video ── */
+      .hero-video-wrap {
+        width: min(520px, 90vw);
+        margin: 0 auto 2rem;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(36, 56, 87, 0.18);
       }
-      .video-intro-overlay.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
-      .video-intro-overlay.fade-out {
-        opacity: 0;
-        pointer-events: none;
-      }
-      .video-intro-overlay video {
+      .hero-video-wrap video {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
+        display: block;
+        border-radius: 8px;
       }
 
       /* ── Envelope Preloader Enhancements ── */
@@ -88,25 +76,10 @@
         border-right: 27px solid transparent;
         border-top: 18px solid var(--paper);
       }
-
-      /* ── Preloader open animation ── */
-      .preloader.opening {
-        animation: envelopeOpen 0.8s ease forwards;
-      }
-      @keyframes envelopeOpen {
-        0%   { transform: scale(1); opacity: 1; }
-        40%  { transform: scale(1.05); opacity: 1; }
-        100% { transform: scale(1.5); opacity: 0; }
-      }
     </style>
   </head>
   <body>
-    <!-- Video Intro Overlay -->
-    <div id="videoIntro" class="video-intro-overlay">
-      <video id="introVideo" playsinline preload="auto">
-        <source src="assets/intro_farouk.mp4" type="video/mp4" />
-      </video>
-    </div>
+
 
     <div id="preloader" class="preloader">
       <div class="preloader-content">
@@ -125,6 +98,16 @@
       <img src="assets/mountain--FPcrQeT.png" alt="" class="corner corner-right" />
 
       <section class="hero">
+        <div class="hero-video-wrap">
+          <div class="vintage-frame">
+            <span class="corner-tr"></span>
+            <span class="corner-bl"></span>
+            <video id="introVideo" playsinline preload="auto">
+              <source src="assets/intro_farouk.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+
         <h2 class="section-kicker">We are getting married</h2>
         <img src="assets/gazebo-BX556LN1.png" alt="" class="gazebo" />
         <h1 class="name">Zeyad Ashraf</h1>
@@ -242,16 +225,14 @@
 
   <script src="../invitation-language-switch.js"></script>
   <script>
-    // Wait for DOM to be ready (runs before deferred module scripts)
     document.addEventListener('DOMContentLoaded', function () {
       var preloader = document.getElementById('preloader');
-      var videoOverlay = document.getElementById('videoIntro');
       var video = document.getElementById('introVideo');
       var envelopeClicked = false;
 
-      if (!preloader || !videoOverlay || !video) return;
+      if (!preloader || !video) return;
 
-      // Force-show preloader & lock body scroll
+      // Force-show preloader
       function forceShowPreloader() {
         if (envelopeClicked) return;
         preloader.classList.remove('hidden');
@@ -259,7 +240,7 @@
       }
       forceShowPreloader();
 
-      // Safety net: if anything tries to hide/remove preloader, undo it
+      // Safety net: block bundled JS from hiding preloader
       var observer = new MutationObserver(function (mutations) {
         if (envelopeClicked) { observer.disconnect(); return; }
         mutations.forEach(function (m) {
@@ -273,10 +254,10 @@
       });
       observer.observe(preloader, { attributes: true, attributeFilter: ['class', 'style'] });
 
-      // Also override setTimeout to block the preloader removal
+      // Block preloader removal until envelope is clicked
       var origRemove = preloader.remove.bind(preloader);
       preloader.remove = function () {
-        if (!envelopeClicked) return; // Block removal until envelope is clicked
+        if (!envelopeClicked) return;
         origRemove();
       };
 
@@ -284,41 +265,21 @@
         if (envelopeClicked) return;
         envelopeClicked = true;
         observer.disconnect();
-
-        // Restore native remove
         preloader.remove = origRemove;
 
-        // Envelope open animation
+        // Fade out preloader
         preloader.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
         preloader.style.transform = 'scale(1.5)';
         preloader.style.opacity = '0';
 
-        // After animation, hide preloader and play video
+        // After fade, remove preloader and play video in hero
         setTimeout(function () {
           preloader.style.display = 'none';
-          videoOverlay.classList.add('active');
           video.play().catch(function () {
-            // Autoplay blocked (e.g. mobile without muted) – skip to site
-            finishIntro();
+            // Autoplay blocked — video stays paused with controls
+            video.setAttribute('controls', '');
           });
         }, 750);
-
-        // When video ends, reveal site
-        video.addEventListener('ended', finishIntro);
-
-        // Allow skipping video by tapping
-        videoOverlay.addEventListener('click', function skipVideo() {
-          videoOverlay.removeEventListener('click', skipVideo);
-          video.pause();
-          finishIntro();
-        });
-      }
-
-      function finishIntro() {
-        videoOverlay.classList.add('fade-out');
-        setTimeout(function () {
-          videoOverlay.remove();
-        }, 700);
       }
 
       preloader.addEventListener('click', openEnvelope);
