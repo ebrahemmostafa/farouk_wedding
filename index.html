@@ -242,42 +242,71 @@
 
   <script src="../invitation-language-switch.js"></script>
   <script>
-    // Override the auto-hide preloader behaviour
-    (function () {
-      const preloader = document.getElementById('preloader');
-      const videoOverlay = document.getElementById('videoIntro');
-      const video = document.getElementById('introVideo');
+    // Wait for DOM to be ready (runs before deferred module scripts)
+    document.addEventListener('DOMContentLoaded', function () {
+      var preloader = document.getElementById('preloader');
+      var videoOverlay = document.getElementById('videoIntro');
+      var video = document.getElementById('introVideo');
+      var envelopeClicked = false;
 
       if (!preloader || !videoOverlay || !video) return;
 
-      // Cancel any existing auto-hide timeout set by the bundled JS
-      // Re-show preloader if it was already hidden
-      preloader.classList.remove('hidden');
-      preloader.style.opacity = '1';
-      preloader.style.pointerEvents = 'auto';
-      preloader.style.display = 'grid';
+      // Force-show preloader & lock body scroll
+      function forceShowPreloader() {
+        if (envelopeClicked) return;
+        preloader.classList.remove('hidden');
+        preloader.style.cssText = 'position:fixed;inset:0;z-index:1000;background:var(--paper);display:grid;place-items:center;opacity:1;pointer-events:auto;cursor:pointer;transition:none;';
+      }
+      forceShowPreloader();
+
+      // Safety net: if anything tries to hide/remove preloader, undo it
+      var observer = new MutationObserver(function (mutations) {
+        if (envelopeClicked) { observer.disconnect(); return; }
+        mutations.forEach(function (m) {
+          if (m.type === 'attributes' && m.attributeName === 'class') {
+            if (preloader.classList.contains('hidden')) {
+              preloader.classList.remove('hidden');
+              forceShowPreloader();
+            }
+          }
+        });
+      });
+      observer.observe(preloader, { attributes: true, attributeFilter: ['class', 'style'] });
+
+      // Also override setTimeout to block the preloader removal
+      var origRemove = preloader.remove.bind(preloader);
+      preloader.remove = function () {
+        if (!envelopeClicked) return; // Block removal until envelope is clicked
+        origRemove();
+      };
 
       function openEnvelope() {
-        // Prevent double clicks
-        preloader.removeEventListener('click', openEnvelope);
+        if (envelopeClicked) return;
+        envelopeClicked = true;
+        observer.disconnect();
 
-        // 1) Start envelope open animation
-        preloader.classList.add('opening');
+        // Restore native remove
+        preloader.remove = origRemove;
 
-        // 2) After envelope fades, show video overlay and play
+        // Envelope open animation
+        preloader.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
+        preloader.style.transform = 'scale(1.5)';
+        preloader.style.opacity = '0';
+
+        // After animation, hide preloader and play video
         setTimeout(function () {
           preloader.style.display = 'none';
           videoOverlay.classList.add('active');
           video.play().catch(function () {
-            // Autoplay blocked – skip straight to site
+            // Autoplay blocked (e.g. mobile without muted) – skip to site
             finishIntro();
           });
         }, 750);
 
-        // 3) When video ends, fade out overlay
+        // When video ends, reveal site
         video.addEventListener('ended', finishIntro);
 
-        // Also allow skipping by tapping during video
+        // Allow skipping video by tapping
         videoOverlay.addEventListener('click', function skipVideo() {
           videoOverlay.removeEventListener('click', skipVideo);
           video.pause();
@@ -293,7 +322,7 @@
       }
 
       preloader.addEventListener('click', openEnvelope);
-    })();
+    });
   </script>
 </body>
 </html>
